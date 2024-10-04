@@ -25,48 +25,56 @@ $(document).ready(function() {
     }
   }
 
-  function callChatbotApi(message) {
-    // params, body, additionalParams
-    return sdk.chatbotPost({}, {
-      messages: [{
-        type: 'unstructured',
-        unstructured: {
-          text: message
-        }
-      }]
-    }, {});
+  function callChatbotApi(msg) {
+    var apigClient = apigClientFactory.newClient();  // Initialize the API Gateway client
+    var params = {};  // No query parameters needed for a POST request
+    var body = {
+      message: msg   // The message input from the user
+    };
+    var additionalParams = {};  // No additional headers or parameters are required
+  
+    // Make the POST request to the chatbot API via API Gateway
+    return apigClient.chatbotPost(params, body, additionalParams)
+      .then(function(response) {
+        console.log("API Gateway response:", response);  // Log the response for debugging
+        return response;  // Return the full response object
+      })
+      .catch(function(error) {
+        console.error("Error in API call:", error);  // Log any errors
+        throw error;  // Re-throw the error so it can be caught and handled later
+      });
   }
-
+  
   function insertMessage() {
-    msg = $('.message-input').val();
-    if ($.trim(msg) == '') {
+    var msg = $('.message-input').val();
+    if ($.trim(msg) === '') {
       return false;
     }
+    
     $('<div class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
     setDate();
     $('.message-input').val(null);
     updateScrollbar();
-
+  
+    // Call the modified function that uses API Gateway SDK
     callChatbotApi(msg)
       .then((response) => {
-        console.log(response);
         var data = response.data;
-
+  
         if (data.messages && data.messages.length > 0) {
           console.log('received ' + data.messages.length + ' messages');
-
           var messages = data.messages;
-
+  
           for (var message of messages) {
             if (message.type === 'unstructured') {
               insertResponseMessage(message.unstructured.text);
             } else if (message.type === 'structured' && message.structured.type === 'product') {
               var html = '';
-
+  
               insertResponseMessage(message.structured.text);
-
+  
               setTimeout(function() {
-                html = '<img src="' + message.structured.payload.imageUrl + '" witdth="200" height="240" class="thumbnail" /><b>' +
+                html = '<img src="' + message.structured.payload.imageUrl + '" width="200" height="240" class="thumbnail" /><b>' +
                   message.structured.payload.name + '<br>$' +
                   message.structured.payload.price +
                   '</b><br><a href="#" onclick="' + message.structured.payload.clickAction + '()">' +
@@ -86,6 +94,7 @@ $(document).ready(function() {
         insertResponseMessage('Oops, something went wrong. Please try again.');
       });
   }
+  
 
   $('.message-submit').click(function() {
     insertMessage();
