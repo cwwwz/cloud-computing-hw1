@@ -4,7 +4,7 @@ from datetime import datetime
 from decimal import Decimal
 
 # Yelp API configuration
-API_KEY = 'CEjnexcxchtZE4Dfv4G7Q1-mOvPTl0EWd0YajTGbr5GRGJy3N-qpyW3U9ZWMA8jf3SHom5SRdW_Qns9RAR2GJpv2xpIHgSs7SVxAuuU6F0CMSDqnECnI7G8-1p8BZ3Yx'
+API_KEY = #ADD YOUR OWN API KEY HERE
 headers = {
     'Authorization': f'Bearer {API_KEY}',
 }
