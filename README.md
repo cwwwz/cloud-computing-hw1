@@ -15,7 +15,6 @@ Youtube Video Demo: https://youtu.be/96HQXmsig9w
 - Javascript
 - HTML
 - CSS
-- AWS - Simple Storage Service (S3)
 - AWS - API Gateway
 - AWS - DynamoDB
 - AWS - EventBridge Scheduler
@@ -24,6 +23,7 @@ Youtube Video Demo: https://youtu.be/96HQXmsig9w
 - AWS - OpenSearch (ElasticSearch)
 - AWS - Simple Email Service (SES)
 - AWS - Simple Queue Service (SQS)
+- AWS - Simple Storage Service (S3)
 - Yelp API
 
 ## Workflow ##
